@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/cameron-martin/pure_promise.svg?branch=master)](https://travis-ci.org/cameron-martin/pure_promise)
+
 # PurePromise
 
 My promises library. It tries to be as close to the Promises/A+ spec as possible, with one exception:
