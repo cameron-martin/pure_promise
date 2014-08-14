@@ -61,6 +61,7 @@ class PurePromise
     @value = value
 
     run_callbacks(@callbacks.map(&:first))
+    # TODO: Find a way of testing this - It makes no visible changes, apart from clearing some memory.
     @callbacks.clear
 
     self
