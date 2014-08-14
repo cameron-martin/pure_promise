@@ -130,7 +130,7 @@ private
   end
 
   def null_callback
-    proc { self  }
+    @null_callback ||= proc { self  }
   end
 
 end
