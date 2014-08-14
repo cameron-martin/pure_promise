@@ -6,12 +6,10 @@ class PurePromise
 
   MutationError = Class.new(RuntimeError)
 
-  def self.fulfill(*args, &block)
-    new.fulfill(*args, &block)
-  end
+  class << self
+    extend Forwardable
 
-  def self.reject(*args, &block)
-    new.reject(*args, &block)
+    def_delegators :new, :fulfill, :reject
   end
 
   def initialize

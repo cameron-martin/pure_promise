@@ -16,27 +16,7 @@ describe PurePromise do
     end
   end
 
-  # REVIEW: Maybe just test delegation here.
-  describe '.fulfill' do
-
-    it 'is a promise' do
-      expect(PurePromise.fulfill).to be_an_instance_of(subject.class)
-    end
-
-    it 'is fulfilled with value' do
-      expect_fulfillment(PurePromise.fulfill(:value), with: :value)
-    end
-  end
-
-  describe '.reject' do
-    it 'is a promise' do
-      expect(PurePromise.reject).to be_an_instance_of(subject.class)
-    end
-
-    it 'is rejected with value' do
-      expect_rejection(PurePromise.reject(:value), with: :value)
-    end
-  end
+  # TODO: Test delegation of .fulfill and .reject
 
   describe '#fulfill' do
     it 'calls fulfill callback when promise transitions to fulfilled' do
