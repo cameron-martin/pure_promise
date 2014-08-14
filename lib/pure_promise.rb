@@ -64,9 +64,9 @@ class PurePromise
     @state = :fulfilled
     @value = value
 
-    # TODO: Call these deferred, but in the correct order.
-    # Can we rely on implementations of defer, or do we have to do a fold over defer { a; b }?
-    @callbacks.map(&:first).each { |callback| callback.call(value) }
+    run_callbacks(@callbacks.map(&:first))
+    @callbacks.clear
+
     self
   end
 
@@ -75,7 +75,10 @@ class PurePromise
 
     @state = :rejected
     @value = value
-    @callbacks.map(&:last).each { |callback| callback.call(value) }
+
+    run_callbacks(@callbacks.map(&:last))
+    @callbacks.clear
+
     self
   end
 
@@ -84,6 +87,8 @@ class PurePromise
       raise TypeError, 'Promise cannot be resolved to itself'
     elsif promise.instance_of?(self.class)
       resolve_pure_promise(promise)
+    #elsif is_thenable?(promise)
+    #  resolve_pure_promise(coerce_thenable(promise))
     else
       raise TypeError, 'Argument is not a promise'
     end
@@ -95,6 +100,26 @@ private
     yield
     nil # We can't rely on defer evaluating to what the block evalutes to
   end
+
+  # This ensures that all callbacks run in order, by setting up an execution chain like
+  # proc { defer { a.call; proc { defer { b.call; ... } }.call  } }.call
+  # You might think this is really slow by only running one callback per tick,
+  # but here are some benchmarks with eventmachine: https://gist.github.com/cameron-martin/08abeaeae1bf746ef718
+  #
+  # REVIEW: Should we pass @value to this to be more explicit?
+  def run_callbacks(callbacks)
+    callbacks.reverse.inject(proc{}) do |memo, callback|
+      proc { defer { callback.call(@value); memo.call } }
+    end.call
+  end
+
+  #def coerce_thenable(thenable)
+  #  self.class.new(&thenable.method(:then))
+  #end
+  #
+  #def is_thenable?(thenable)
+  #  thenable.respond_to?(:then) && thenable.method(:then).arity == 2
+  #end
 
   # TODO: Implement 'Ruby equality trick' to hide #value
   def resolve_pure_promise(promise)

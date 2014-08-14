@@ -32,7 +32,6 @@ TODO: Write usage instructions here
 
 * Implement the thenable -> PurePromise part of the promise resolution procedure
 * Catch exceptions and convert them into rejected promises.
-* Defer callbacks. See inline todo.
 * Add usage instructions
 * Hide `#value` by using [this nifty trick][1].
 * Consider removing the `pending?`, `fulfilled?` and `rejected?` methods; is allowing inspecting a promise's state wrong?

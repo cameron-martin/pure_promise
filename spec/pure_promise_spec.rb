@@ -206,6 +206,20 @@ describe PurePromise do
       expect(return_promise).to be_an_instance_of(subject.class)
     end
 
+    it 'executes callbacks in order' do
+      callbacks = 2.times.map do
+        double('fulfill_callback').as_null_object
+      end.each do |callback|
+        subject.then(callback)
+      end
+
+      callbacks.each do |callback|
+        expect(callback).to receive(:call).and_return(PurePromise.fulfill).ordered
+      end
+
+      subject.fulfill
+    end
+
     context 'with no callbacks' do
 
       # TODO: Verify that this is correct
