@@ -37,11 +37,11 @@ describe PurePromise do
       expect(PurePromise.reject).to be_an_instance_of(subject.class)
     end
 
-    it 'is fulfilled' do
+    it 'is rejected' do
       expect(PurePromise.reject).to be_rejected
     end
 
-    it 'is fulfilled with value' do
+    it 'is rejected with value' do
       expect_rejection(PurePromise.reject(:value), with: :value)
     end
   end
