@@ -14,11 +14,6 @@ describe PurePromise::Callback do
 
       expect(return_value).to equal(promise)
     end
-
-    # TODO: consider removing this, as this check is not handled directly by Callback
-    it 'raises error if it does not return a promise' do
-      expect { PurePromise::Callback.new(proc { }, return_promise).call(:value) }.to raise_error(TypeError)
-    end
   end
 
 end
