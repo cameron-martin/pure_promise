@@ -211,6 +211,33 @@ describe PurePromise do
       subject.fulfill
     end
 
+    # TODO: Find a better way of testing this
+    it 'calls defer if fulfilled' do
+      subject.fulfill
+      expect(subject).to receive(:defer)
+      subject.then
+    end
+
+    it 'calls defer if rejected' do
+      subject.reject
+      expect(subject).to receive(:defer)
+      subject.then
+    end
+
+    it 'calls defer when fulfilled' do
+      subject.then
+      expect(subject).to receive(:defer)
+      subject.fulfill
+    end
+
+    it 'calls defer when rejected' do
+      subject.then
+      expect(subject).to receive(:defer)
+      subject.reject
+    end
+
+    # REVIEW: Consider moving context 'if/when subject is fulfilled/rejected' into this level
+
     context 'with no callbacks' do
 
       it 'returns a promise that resolves when subject resolves' do
