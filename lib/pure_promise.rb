@@ -106,7 +106,7 @@ private
   # You might think this is really slow by only running one callback per tick,
   # but here are some benchmarks with eventmachine: https://gist.github.com/cameron-martin/08abeaeae1bf746ef718
   #
-  # REVIEW: Should we pass @value to this to be more explicit?
+  # We do this because we do not want to require implementations of defer to execute blocks in the order they were registered.
   def run_callbacks(callbacks)
     callbacks.reverse.inject(proc{}) do |memo, callback|
       proc { defer { callback.call(@value); memo.call } }
