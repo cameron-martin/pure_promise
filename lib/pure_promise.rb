@@ -16,8 +16,6 @@ class PurePromise
 
   def initialize
     @state = :pending # Pending/fulfilled/rejected
-    #@value = nil
-
     @callbacks = []
 
     yield method(:fulfill), method(:reject) if block_given?
