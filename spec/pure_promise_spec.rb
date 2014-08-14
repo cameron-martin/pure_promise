@@ -23,10 +23,6 @@ describe PurePromise do
       expect(PurePromise.fulfill).to be_an_instance_of(subject.class)
     end
 
-    it 'is fulfilled' do
-      expect(PurePromise.fulfill).to be_fulfilled
-    end
-
     it 'is fulfilled with value' do
       expect_fulfillment(PurePromise.fulfill(:value), with: :value)
     end
@@ -35,10 +31,6 @@ describe PurePromise do
   describe '.reject' do
     it 'is a promise' do
       expect(PurePromise.reject).to be_an_instance_of(subject.class)
-    end
-
-    it 'is rejected' do
-      expect(PurePromise.reject).to be_rejected
     end
 
     it 'is rejected with value' do
@@ -51,6 +43,11 @@ describe PurePromise do
       expect_fulfillment(subject, with: :value) do
         subject.fulfill(:value)
       end
+    end
+
+    it 'is fulfilled' do
+      subject.fulfill
+      expect(subject).to be_fulfilled
     end
 
     it 'should raise error if fulfill twice' do
@@ -73,6 +70,11 @@ describe PurePromise do
       expect_rejection(subject, with: :value) do
         subject.reject(:value)
       end
+    end
+
+    it 'is rejected' do
+      subject.reject
+      expect(subject).to be_rejected
     end
 
     it 'should raise error if rejected twice' do
