@@ -194,7 +194,6 @@ describe PurePromise do
 
   end
 
-  # TODO: Add more tests here
   describe '#then' do
 
     it 'is a promise' do
@@ -218,7 +217,6 @@ describe PurePromise do
 
     context 'with no callbacks' do
 
-      # TODO: Verify that this is correct
       it 'returns a promise that resolves when subject resolves' do
         return_promise = subject.then
 
