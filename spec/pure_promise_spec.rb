@@ -5,22 +5,16 @@ describe PurePromise do
   let(:fulfill_callback) { double('fulfill_callback').as_null_object }
   let(:reject_callback) { double('reject_callback').as_null_object }
 
-  #describe '#initiailize' do
-  #  it 'yields fullfill and reject methods if block given' do
-  #    proc = class_double('Proc').as_null_object
-  #    #block = double('block', to_proc: proc)
-  #    #block = Object.new
-  #    #block.define_singleton_method(:to_proc) { proc }
-  #    subject = PurePromise.new(&proc)
-  #
-  #    expect(proc).to have_received(:call).with(subject.method(:fulfill), subject.method(:reject))
-  #
-  #    #promise = nil
-  #    #expect do |b|
-  #    #  promise = PurePromise.new(&b)
-  #    #end.to yield_with_args(promise.method(:fulfill), promise.method(:reject))
-  #  end
-  #end
+  describe '#initiailize' do
+    it 'yields fullfill and reject methods if block given' do
+      expect do |b|
+        PurePromise.new(&b)
+      end.to yield_with_args(
+                 a_bound_method_of(PurePromise.instance_method(:fulfill)),
+                 a_bound_method_of(PurePromise.instance_method(:reject))
+             )
+    end
+  end
 
   # REVIEW: Maybe just test delegation here.
   describe '.fulfill' do
