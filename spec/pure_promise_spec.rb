@@ -150,14 +150,14 @@ describe PurePromise do
     end
   end
 
-  describe '#resolve_to' do
+  describe '#resolve' do
 
     it 'raises TypeError if argument is same as self' do
-      expect { subject.resolve_to(subject) }.to raise_error(TypeError, 'Promise cannot be resolved to itself')
+      expect { subject.resolve(subject) }.to raise_error(TypeError, 'Promise cannot be resolved to itself')
     end
 
     it 'raises TypeError if argument is not a promise' do
-      expect { subject.resolve_to(Object.new) }.to raise_error(TypeError, 'Argument is not a promise')
+      expect { subject.resolve(Object.new) }.to raise_error(TypeError, 'Argument is not a promise')
     end
 
     context 'when argument is a promise' do
@@ -165,7 +165,7 @@ describe PurePromise do
 
       it 'fulfills subject if argument is fulfilled' do
         argument.fulfill(:value)
-        subject.resolve_to(argument)
+        subject.resolve(argument)
 
         expect(subject).to be_fulfilled
         expect(subject.value).to eq(:value)
@@ -173,14 +173,14 @@ describe PurePromise do
 
       it 'rejects subject if argument is rejected' do
         argument.reject(:value)
-        subject.resolve_to(argument)
+        subject.resolve(argument)
 
         expect(subject).to be_rejected
         expect(subject.value).to eq(:value)
       end
 
       it 'rejects subject when argument is rejected' do
-        subject.resolve_to(argument)
+        subject.resolve(argument)
         argument.reject(:value)
 
         expect(subject).to be_rejected
@@ -188,7 +188,7 @@ describe PurePromise do
       end
 
       it 'fulfills subject when argument is fulfilled' do
-        subject.resolve_to(argument)
+        subject.resolve(argument)
         argument.fulfill(:value)
 
         expect(subject).to be_fulfilled

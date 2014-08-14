@@ -79,11 +79,11 @@ class PurePromise
     self
   end
 
-  def resolve_to(promise)
-    raise TypeError, 'Promise cannot be resolved to itself' if equal?(promise)
-
-    if promise.is_a?(PurePromise)
-      resolve_to_pure_promise(promise)
+  def resolve(promise)
+    if equal?(promise)
+      raise TypeError, 'Promise cannot be resolved to itself'
+    elsif promise.instance_of?(self.class)
+      resolve_pure_promise(promise)
     else
       raise TypeError, 'Argument is not a promise'
     end
@@ -97,7 +97,7 @@ private
   end
 
   # TODO: Implement 'Ruby equality trick' to hide #value
-  def resolve_to_pure_promise(promise)
+  def resolve_pure_promise(promise)
     if promise.fulfilled?
       fulfill(promise.value)
     elsif promise.rejected?

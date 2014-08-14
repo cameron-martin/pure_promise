@@ -8,7 +8,7 @@ class PurePromise
 
     def call(value)
       @callback.call(value).tap do |return_value|
-        @return_promise.resolve_to(return_value)
+        @return_promise.resolve(return_value)
       end
     end
 
