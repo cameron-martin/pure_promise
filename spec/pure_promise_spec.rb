@@ -163,32 +163,28 @@ describe PurePromise do
         argument.fulfill(:value)
         subject.resolve(argument)
 
-        expect(subject).to be_fulfilled
-        expect(subject.value).to eq(:value)
+        expect_fulfillment(subject, with: :value)
       end
 
       it 'rejects subject if argument is rejected' do
         argument.reject(:value)
         subject.resolve(argument)
 
-        expect(subject).to be_rejected
-        expect(subject.value).to eq(:value)
-      end
-
-      it 'rejects subject when argument is rejected' do
-        subject.resolve(argument)
-        argument.reject(:value)
-
-        expect(subject).to be_rejected
-        expect(subject.value).to eq(:value)
+        expect_rejection(subject, with: :value)
       end
 
       it 'fulfills subject when argument is fulfilled' do
         subject.resolve(argument)
         argument.fulfill(:value)
 
-        expect(subject).to be_fulfilled
-        expect(subject.value).to eq(:value)
+        expect_fulfillment(subject, with: :value)
+      end
+
+      it 'rejects subject when argument is rejected' do
+        subject.resolve(argument)
+        argument.reject(:value)
+
+        expect_rejection(subject, with: :value)
       end
     end
 
