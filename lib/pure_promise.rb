@@ -16,15 +16,15 @@ class PurePromise
 
   def initialize
     @state = :pending # Pending/fulfilled/rejected
-    @value = nil
+    #@value = nil
 
     @callbacks = []
 
     yield method(:fulfill), method(:reject) if block_given?
   end
 
-  # REVIEW: Are these defaults correct?
-  def then(fulfill_callback=proc { self }, reject_callback=proc { self })
+  # REVIEW: Consider having two callback chains, to avoid having potentially expensive null_callbacks littering @callbacks
+  def then(fulfill_callback=null_callback, reject_callback=null_callback)
     PurePromise.new.tap do |return_promise|
 
       fulfill_callback = Callback.new(fulfill_callback, return_promise)
@@ -42,7 +42,7 @@ class PurePromise
   end
 
   #def catch(callback)
-  #  self.then(proc { self }, callback)
+  #  self.then(null_callback, callback)
   #end
 
   # TODO: consider removing these
@@ -130,6 +130,10 @@ private
     else
       promise.then(method(:fulfill), method(:reject))
     end
+  end
+
+  def null_callback
+    proc { self  }
   end
 
 end
