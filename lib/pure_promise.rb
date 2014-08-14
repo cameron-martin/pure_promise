@@ -63,8 +63,9 @@ class PurePromise
 
     @state = :fulfilled
     @value = value
-    # TODO: Make it so that it can only be fulfilled or rejected once!
-    # TODO: Call these deferred, but in the correct order
+
+    # TODO: Call these deferred, but in the correct order.
+    # Can we rely on implementations of defer, or do we have to do a fold over defer { a; b }?
     @callbacks.map(&:first).each { |callback| callback.call(value) }
     self
   end
@@ -78,7 +79,6 @@ class PurePromise
     self
   end
 
-  # TODO: Implement the thenable part of the spec.
   def resolve_to(promise)
     raise TypeError, 'Promise cannot be resolved to itself' if equal?(promise)
 

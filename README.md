@@ -4,7 +4,9 @@ My promises library. It tries to be as close to the Promises/A+ spec as possible
 
 __A promise callback _must_ return a promise__
 
-This makes it slightly more verbose, but
+This makes it slightly more verbose, but it has some nice properties. I'll explain them here later.
+
+Influenced by [promise.rb][2], the [Promises/A+ spec][3], and browsers' implementations of promises (for the stuff that's not `#then`).
 
 ## Installation
 
@@ -29,6 +31,8 @@ TODO: Write usage instructions here
 ## TODO
 
 * Implement the thenable -> PurePromise part of the promise resolution procedure
+* Catch exceptions and convert them into rejected promises.
+* Defer callbacks. See inline todo.
 * Add usage instructions
 * Hide `#value` by using [this nifty trick][1].
 * Consider removing the `pending?`, `fulfilled?` and `rejected?` methods; is allowing inspecting a promise's state wrong?
@@ -45,3 +49,5 @@ TODO: Write usage instructions here
 5. Create a new Pull Request
 
 [1]: http://kylecronin.me/blog/2012/4/22/a-clever-ruby-equality-trick.html
+[2]: https://github.com/lgierth/promise.rb
+[3]: http://promisesaplus.com/
