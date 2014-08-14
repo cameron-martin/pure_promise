@@ -1,6 +1,6 @@
 require 'pure_promise'
 
-SPEC_ROOT = __dir__
+SPEC_ROOT = File.dirname(__FILE__)
 
 Dir[File.join(SPEC_ROOT, 'support/**/*.rb')].each { |f| require f }
 
