@@ -1,4 +1,5 @@
 require 'pure_promise/callback'
+require 'pure_promise/coercer'
 
 class PurePromise
 
@@ -82,10 +83,8 @@ class PurePromise
   def resolve(promise)
     if equal?(promise)
       raise TypeError, 'Promise cannot be resolved to itself'
-    elsif promise.instance_of?(self.class)
-      resolve_pure_promise(promise)
-    #elsif is_thenable?(promise)
-    #  resolve_pure_promise(coerce_thenable(promise))
+    elsif Coercer.is_thenable?(promise)
+      resolve_pure_promise(Coercer.coerce(promise, self.class))
     else
       raise TypeError, 'Argument is not a promise'
     end
@@ -110,15 +109,9 @@ private
     end.call
   end
 
-  #def coerce_thenable(thenable)
-  #  self.class.new(&thenable.method(:then))
-  #end
-  #
-  #def is_thenable?(thenable)
-  #  thenable.respond_to?(:then) && thenable.method(:then).arity == 2
-  #end
-
   # TODO: Implement 'Ruby equality trick' to hide #value
+  # Or: Implement a resolve_into method on the other promise
+  # This would allow hiding of fulfilled?, rejected? and pending?, but it adds another public method.
   def resolve_pure_promise(promise)
     if promise.fulfilled?
       fulfill(promise.value)

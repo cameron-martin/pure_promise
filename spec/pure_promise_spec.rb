@@ -168,6 +168,28 @@ describe PurePromise do
       end
     end
 
+    context 'when argument is a thenable' do
+      it 'fulfills when callback passed to then is called' do
+        thenable = Thenable::Conformant.new
+
+        subject.resolve(thenable)
+
+        expect_fulfillment(subject, with: :value) do
+          thenable.fulfill(:value)
+        end
+      end
+
+      it 'rejects when callback passed to then is called' do
+        thenable = Thenable::Conformant.new
+
+        subject.resolve(thenable)
+
+        expect_rejection(subject, with: :value) do
+          thenable.reject(:value)
+        end
+      end
+    end
+
   end
 
   describe '#then' do
