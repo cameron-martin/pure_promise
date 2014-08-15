@@ -119,6 +119,7 @@ private
       reject(promise.value)
     else
       promise.then(method(:fulfill), method(:reject))
+      self
     end
   end
 

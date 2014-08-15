@@ -139,6 +139,12 @@ describe PurePromise do
     context 'when argument is a promise' do
       let(:argument) { PurePromise.new }
 
+      it 'returns self when argument is pending' do
+        return_value = subject.resolve(argument)
+
+        expect(return_value).to eq(subject)
+      end
+
       it 'fulfills subject if argument is fulfilled' do
         argument.fulfill(:value)
         subject.resolve(argument)
