@@ -38,14 +38,11 @@ TODO: Write usage instructions here
 
 ## TODO
 
-* Implement the thenable -> PurePromise part of the promise resolution procedure
 * Implement `#catch` method
-* Catch exceptions and convert them into rejected promises.
 * Add usage instructions
-* Hide `#value` by using [this nifty trick][1].
-* Consider removing the `pending?`, `fulfilled?` and `rejected?` methods; is allowing inspecting a promise's state wrong?
 * DRY up specs; they are pretty verbose atm.
 * Get 100% mutation coverage
+* Add more rubies to travis build matrix.
 * Release gem
 
 ## Contributing
