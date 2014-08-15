@@ -40,19 +40,6 @@ class PurePromise
   #  self.then(null_callback, callback)
   #end
 
-  # TODO: consider removing these
-  def pending?
-    @state.equal?(:pending)
-  end
-
-  def fulfilled?
-    @state.equal?(:fulfilled)
-  end
-
-  def rejected?
-    @state.equal?(:rejected)
-  end
-
   def fulfill(value=nil)
     raise MutationError, 'You can only fulfill a pending promise' unless pending?
 
@@ -122,6 +109,12 @@ private
 
   def null_callback
     @null_callback ||= proc { self }
+  end
+
+  [:pending, :fulfilled, :rejected].each do |state|
+    define_method("#{state}?") do
+      @state.equal?(state)
+    end
   end
 
 end

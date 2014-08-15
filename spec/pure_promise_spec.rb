@@ -27,7 +27,7 @@ describe PurePromise do
 
     it 'is fulfilled' do
       subject.fulfill
-      expect(subject).to be_fulfilled
+      expect_fulfillment(subject)
     end
 
     it 'should raise error if fulfill twice' do
@@ -54,7 +54,7 @@ describe PurePromise do
 
     it 'is rejected' do
       subject.reject
-      expect(subject).to be_rejected
+      expect_rejection(subject)
     end
 
     it 'should raise error if rejected twice' do
@@ -69,60 +69,6 @@ describe PurePromise do
 
     it 'returns self' do
       expect(subject.reject).to eq(subject)
-    end
-  end
-
-  describe '#pending?' do
-    it 'is true when pending' do
-      expect(subject).to be_pending
-    end
-
-    it 'is false when fulfilled' do
-      subject.fulfill
-
-      expect(subject).to_not be_pending
-    end
-
-    it 'is false when rejected' do
-      subject.reject
-
-      expect(subject).to_not be_pending
-    end
-  end
-
-  describe '#fulfilled?' do
-    it 'is true when fulfilled' do
-      subject.fulfill
-
-      expect(subject).to be_fulfilled
-    end
-
-    it 'is false when rejected' do
-      subject.reject
-
-      expect(subject).to_not be_fulfilled
-    end
-
-    it 'is false when pending' do
-      expect(subject).to_not be_fulfilled
-    end
-  end
-
-  describe '#rejected?' do
-    it 'is true when rejected' do
-      subject.reject
-
-      expect(subject).to be_rejected
-    end
-
-    it 'is false when fulfilled' do
-      subject.fulfill
-
-      expect(subject).to_not be_rejected
-    end
-
-    it 'is false when pending' do
-      expect(subject).to_not be_rejected
     end
   end
 
