@@ -30,6 +30,12 @@ Or install it yourself as:
 
 TODO: Write usage instructions here
 
+## Design goals
+* Limit the public api to as small as possible (then, fulfill, reject, resolve).
+  Everything else should just be convenience methods on top of these.
+* No introspection of the value that a promise has resolved to - access should be only allowed through then.
+  Otherwise it creates problems with what it should return while pending. (Nil is still a value).
+
 ## TODO
 
 * Implement the thenable -> PurePromise part of the promise resolution procedure
