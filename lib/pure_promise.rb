@@ -93,7 +93,6 @@ private
 
   def defer
     yield
-    nil # We can't rely on defer evaluating to what the block evalutes to
   end
 
   # This ensures that all callbacks run in order, by setting up an execution chain like
