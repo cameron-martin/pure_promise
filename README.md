@@ -40,6 +40,7 @@ TODO: Write usage instructions here
 
 * Implement `#catch` method
 * Add usage instructions
+* Catch errors raised in handlers.
 * DRY up specs; they are pretty verbose atm.
 * Get 100% mutation coverage
 * Add more rubies to travis build matrix.
