@@ -77,6 +77,8 @@ class PurePromise
   end
 
   def resolve_into(pure_promise)
+    raise TypeError, 'Argument must be of same type as self' unless pure_promise.instance_of?(self.class)
+
     if fulfilled?
       pure_promise.fulfill(@value)
     elsif rejected?

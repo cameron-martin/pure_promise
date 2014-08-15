@@ -144,6 +144,50 @@ describe PurePromise do
 
   end
 
+  describe '#resolve_into' do
+    let(:argument) { PurePromise.new }
+
+    it 'returns self' do
+      return_value = subject.resolve_into(argument)
+
+      expect(return_value).to equal(subject)
+    end
+
+    it 'raises TypeError if argument is not a PurePromise' do
+      expect { subject.resolve_into(Object.new) }.to raise_error(TypeError, 'Argument must be of same type as self')
+    end
+
+    it 'fulfills promise if self is fulfilled' do
+      subject.fulfill(:value)
+
+      expect(argument).to receive(:fulfill).with(:value)
+      subject.resolve_into(argument)
+    end
+
+    it 'rejects promise if self is rejected' do
+      subject.reject(:value)
+
+      expect(argument).to receive(:reject).with(:value)
+      subject.resolve_into(argument)
+    end
+
+    it 'fulfills promise when self is fulfilled' do
+      subject.resolve_into(argument)
+
+      expect_fulfillment(argument, with: :value) do
+        subject.fulfill(:value)
+      end
+    end
+
+    it 'rejects promise when self is rejected' do
+      subject.resolve_into(argument)
+
+      expect_rejection(argument, with: :value) do
+        subject.reject(:value)
+      end
+    end
+  end
+
   describe '#then' do
 
     it 'is a promise' do
