@@ -3,8 +3,6 @@ require 'pure_promise/coercer'
 
 class PurePromise
 
-  attr_reader :value
-
   MutationError = Class.new(RuntimeError)
 
   class << self
@@ -84,10 +82,22 @@ class PurePromise
     if equal?(promise)
       raise TypeError, 'Promise cannot be resolved to itself'
     elsif Coercer.is_thenable?(promise)
-      resolve_pure_promise(Coercer.coerce(promise, self.class))
+      Coercer.coerce(promise, self.class).resolve_into(self)
+      self
     else
       raise TypeError, 'Argument is not a promise'
     end
+  end
+
+  def resolve_into(pure_promise)
+    if fulfilled?
+      pure_promise.fulfill(@value)
+    elsif rejected?
+      pure_promise.reject(@value)
+    else
+      self.then(pure_promise.method(:fulfill), pure_promise.method(:reject))
+    end
+    self
   end
 
 private
@@ -109,19 +119,6 @@ private
     end.call
   end
 
-  # TODO: Implement 'Ruby equality trick' to hide #value
-  # Or: Implement a resolve_into method on the other promise
-  # This would allow hiding of fulfilled?, rejected? and pending?, but it adds another public method.
-  def resolve_pure_promise(promise)
-    if promise.fulfilled?
-      fulfill(promise.value)
-    elsif promise.rejected?
-      reject(promise.value)
-    else
-      promise.then(method(:fulfill), method(:reject))
-      self
-    end
-  end
 
   def null_callback
     @null_callback ||= proc { self }
