@@ -6,10 +6,13 @@ class PurePromise
       @return_promise = return_promise
     end
 
+    # TODO: Return a consistent value here. Nil? self?
     def call(value)
-      @callback.call(value).tap do |return_value|
-        @return_promise.resolve(return_value)
-      end
+      return_value = @callback.call(value)
+    rescue Exception => error
+      @return_promise.reject(error)
+    else
+      @return_promise.resolve(return_value)
     end
 
   end

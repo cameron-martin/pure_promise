@@ -10,9 +10,16 @@ describe PurePromise::Callback do
 
       expect(callback).to receive(:call).with(:value).and_return(promise)
 
-      return_value = PurePromise::Callback.new(callback, return_promise).call(:value)
+      PurePromise::Callback.new(callback, return_promise).call(:value)
+    end
 
-      expect(return_value).to equal(promise)
+    it 'rejects promise if callback errors' do
+      error = RuntimeError.new
+      callback = proc { raise error }
+
+      PurePromise::Callback.new(callback, return_promise).call(:value)
+
+      expect_rejection(return_promise, with: error)
     end
   end
 
