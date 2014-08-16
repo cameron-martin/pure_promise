@@ -30,17 +30,34 @@ Or install it yourself as:
 
 TODO: Write usage instructions here
 
+## Shortcomings addressed
+
+This isn't having a dig at anyone else's work, these are just the reasons why I wanted to create my own promises library.
+I could have got a lot of things wrong too, and I'd love to hear about them in the issues section.
+
+### In Promises/A+ Spec
+
+* You cannot wrap anything that implements a `then` method in a promise.
+  This bit me when wanting to pass around a [faye client][1] in a promise system - and it took me forever to debug.
+  PurePromise addresses this by forcing you to return a promise from your callbacks.
+
+### In Promise.rb
+
+* IMO, being able to retrieve the value of the promise through an accessor is wrong.
+  What do you return when the promise is pending and _has no value_? Nil? But nil is a valid value for a promise,
+  creating ambiguity.
+
 ## Design goals
+* Address the above shortcomings.
 * Limit the public api to as small as possible (then, fulfill, reject, resolve).
   Everything else should just be convenience methods on top of these.
-* No introspection of the value that a promise has resolved to - access should be only allowed through then.
-  Otherwise it creates problems with what it should return while pending. (Nil is still a value).
 
 ## TODO
 
 * Implement `#catch` method
 * Add usage instructions
 * Catch errors raised in handlers.
+* Add PurePromise.raise method, which created a rejected promise with an exception, with backtrace set properly.
 * DRY up specs; they are pretty verbose atm.
 * Get 100% mutation coverage
 * Add more rubies to travis build matrix.
@@ -54,6 +71,6 @@ TODO: Write usage instructions here
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create a new Pull Request
 
-[1]: http://kylecronin.me/blog/2012/4/22/a-clever-ruby-equality-trick.html
+[1]: http://faye.jcoglan.com/browser.html
 [2]: https://github.com/lgierth/promise.rb
 [3]: http://promisesaplus.com/
