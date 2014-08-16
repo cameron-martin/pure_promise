@@ -5,7 +5,7 @@ describe PurePromise do
   let(:fulfill_callback) { double('fulfill_callback').as_null_object }
   let(:reject_callback) { double('reject_callback').as_null_object }
 
-  describe '#initiailize' do
+  describe '#initialize' do
     it 'yields fullfill and reject methods if block given' do
       expect do |b|
         PurePromise.new(&b)
