@@ -43,26 +43,13 @@ class PurePromise
   def fulfill(value=nil)
     raise MutationError, 'You can only fulfill a pending promise' unless pending?
 
-    @state = :fulfilled
-    @value = value
-
-    run_callbacks(@callbacks.map(&:first))
-    # TODO: Find a way of testing this - It makes no visible changes, apart from clearing some memory.
-    @callbacks.clear
-
-    self
+    mutate_state(:fulfilled, value, @callbacks.map(&:first))
   end
 
   def reject(value=nil)
     raise MutationError, 'You can only reject a pending promise' unless pending?
 
-    @state = :rejected
-    @value = value
-
-    run_callbacks(@callbacks.map(&:last))
-    @callbacks.clear
-
-    self
+    mutate_state(:rejected, value, @callbacks.map(&:last))
   end
 
   def resolve(promise)
@@ -105,6 +92,17 @@ private
     callbacks.reverse.inject(proc{}) do |memo, callback|
       proc { defer { callback.call(@value); memo.call } }
     end.call
+  end
+
+  def mutate_state(state, value, callbacks)
+    @state = state
+    @value = value
+
+    run_callbacks(callbacks)
+    # TODO: Find a way of testing this - It makes no visible changes, apart from clearing some memory.
+    @callbacks.clear
+
+    self
   end
 
 
