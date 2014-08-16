@@ -21,18 +21,10 @@ class PurePromise
   # REVIEW: Consider having two callback chains, to avoid having potentially expensive null_callbacks littering @callbacks
   def then(fulfill_callback=null_callback, reject_callback=null_callback)
     PurePromise.new.tap do |return_promise|
-
-      fulfill_callback = Callback.new(fulfill_callback, return_promise)
-      reject_callback = Callback.new(reject_callback, return_promise)
-
-      if fulfilled?
-        defer { fulfill_callback.call(@value) }
-      elsif rejected?
-        defer { reject_callback.call(@value) }
-      else
-        @callbacks << [fulfill_callback, reject_callback]
-      end
-
+      register_callbacks(
+          Callback.new(fulfill_callback, return_promise),
+          Callback.new(reject_callback, return_promise)
+      )
     end
   end
 
@@ -91,6 +83,16 @@ private
     @callbacks.clear
 
     self
+  end
+
+  def register_callbacks(fulfill_callback, reject_callback)
+    if fulfilled?
+      defer { fulfill_callback.call(@value) }
+    elsif rejected?
+      defer { reject_callback.call(@value) }
+    else
+      @callbacks << [fulfill_callback, reject_callback]
+    end
   end
 
   # This ensures that all callbacks run in order, by setting up an execution chain like
