@@ -14,6 +14,10 @@ describe PurePromise do
                  a_bound_method_of(PurePromise.instance_method(:reject))
              )
     end
+
+    it 'initializes as pending' do
+      expect_pending(PurePromise.new)
+    end
   end
 
   # TODO: Test delegation of .fulfill and .reject

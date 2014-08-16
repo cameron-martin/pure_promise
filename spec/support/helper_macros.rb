@@ -24,6 +24,15 @@ module HelperMacros
     expect(fulfill_callback).to_not have_received(:call)
   end
 
+  def expect_pending(promise)
+    fulfill_callback, reject_callback = create_callback_doubles
+
+    promise.then(fulfill_callback, reject_callback)
+
+    expect(fulfill_callback).to_not have_received(:call)
+    expect(reject_callback).to_not have_received(:call)
+  end
+
 private
 
   def create_callback_doubles
