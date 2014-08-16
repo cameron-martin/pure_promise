@@ -357,4 +357,26 @@ describe PurePromise do
 
   end
 
+  describe '#catch' do
+
+    it 'is called on rejected promise' do
+      subject.reject(:value)
+
+      callback = proc { PurePromise.resolve }
+
+      expect(callback).to receive(:call).with(:value).and_call_original
+
+      subject.catch(callback)
+    end
+
+    it 'returns a promise that resolves with original' do
+      promise = subject.catch(proc { PurePromise.resolve })
+
+      expect_fulfillment(promise, with: :value) do
+        subject.fulfill(:value)
+      end
+    end
+
+  end
+
 end

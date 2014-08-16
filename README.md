@@ -54,10 +54,8 @@ I could have got a lot of things wrong too, and I'd love to hear about them in t
 
 ## TODO
 
-* Implement `#catch` method
 * Add usage instructions
 * Add PurePromise.raise method, which created a rejected promise with an exception, with backtrace set properly.
-* Add catch method.
 * DRY up specs; they are pretty verbose atm.
 * Get 100% mutation coverage
 * Add more rubies to travis build matrix.

@@ -28,9 +28,9 @@ class PurePromise
     end
   end
 
-  #def catch(callback)
-  #  self.then(null_callback, callback)
-  #end
+  def catch(callback)
+    self.then(null_callback, callback)
+  end
 
   def fulfill(value=nil)
     raise MutationError, 'You can only fulfill a pending promise' unless pending?
