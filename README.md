@@ -84,7 +84,8 @@ promise.fulfill(:value)
 promise.reject(:value)
 
 # Make promise take on the form of thenable
-# This can be any object that implements a semi-compliant then method, as described in the Promises/A+ spec
+# This can be any object that implements a semi-compliant then method,
+# as described in the Promises/A+ spec
 promise.resolve(thenable)
 
 ```
