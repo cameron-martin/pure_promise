@@ -158,7 +158,6 @@ I could have got a lot of things wrong too, and I'd love to hear about them in t
 
 * DRY up specs; they are pretty verbose atm.
 * Get 100% mutation coverage
-* Release gem
 
 ## Contributing
 
