@@ -278,7 +278,7 @@ describe PurePromise do
 
     context 'with no callbacks' do
 
-      it 'returns a promise that resolves when subject resolves' do
+      it 'returns a promise that fulfills when subject fulfills' do
         return_promise = subject.then
 
         subject.fulfill(:value)
@@ -398,15 +398,15 @@ describe PurePromise do
     it 'is called on rejected promise' do
       subject.reject(:value)
 
-      callback = proc { PurePromise.resolve }
+      callback = proc { PurePromise.fulfill }
 
       expect(callback).to receive(:call).with(:value).and_call_original
 
       subject.catch(callback)
     end
 
-    it 'returns a promise that resolves with original' do
-      promise = subject.catch(proc { PurePromise.resolve })
+    it 'returns a promise that fulfills with original' do
+      promise = subject.catch(proc { PurePromise.fulfill })
 
       expect_fulfillment(promise, with: :value) do
         subject.fulfill(:value)
