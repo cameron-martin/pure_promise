@@ -7,8 +7,8 @@ Gem::Specification.new do |spec|
   spec.version       = '0.0.1'
   spec.authors       = ['Cameron Martin']
   spec.email         = ['cameronmartin123@gmail.com']
-  spec.summary       = %q{TODO: Write a short summary. Required.}
-  spec.description   = %q{TODO: Write a longer description. Optional.}
+  spec.summary       = %q{Promises/A+ with a twist}
+  spec.description   = %q{Promises/A+ with a twist. Resolves some of the inconsistencies and annoyances I've experienced with other promises libraries}
   spec.homepage      = ''
   spec.license       = 'MIT'
 
