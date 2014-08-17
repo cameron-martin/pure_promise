@@ -8,7 +8,7 @@ class PurePromise
   class << self
     extend Forwardable
 
-    def_delegators :new, :fulfill, :reject
+    def_delegators :new, :fulfill, :reject, :resolve
 
     # TODO: Clean this up, it's pretty messy.
     def error(message_or_exception=nil, message=nil, backtrace=nil)

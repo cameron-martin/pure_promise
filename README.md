@@ -64,6 +64,9 @@ PurePromise.new do |fulfill, reject|
   end
 end
 
+# Create a promise with fulfills/rejects when thenable fulfills/rejects
+PurePromise.resolve(thenable)
+
 # Create a promise which is rejected to an exception object, with backtrace properly set.
 PurePromise.error # #<RuntimeError: RuntimeError>
 PurePromise.error('message') # #<RuntimeError: message>
