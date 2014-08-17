@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/cameron-martin/pure_promise.svg?branch=master)](https://travis-ci.org/cameron-martin/pure_promise)
+[![Code Climate](https://codeclimate.com/github/cameron-martin/pure_promise/badges/gpa.svg)](https://codeclimate.com/github/cameron-martin/pure_promise)
 
 # PurePromise
 
