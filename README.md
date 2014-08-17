@@ -92,7 +92,7 @@ promise.resolve(thenable)
 
 ### Accessing promises
 
-The only way to access a promises value is through the then/catch methods.
+The only way to access a promise's value is through the then/catch methods.
 
 Each callback __must__ evaluate to a promise. If the action in the callback succeeds, return `PurePromise.fulfill`,
 otherwise return `PurePromise.reject`.
