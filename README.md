@@ -28,7 +28,104 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+### Making them asynchronous
+
+Note: The defer method does not have to yield in the order in which defer was called,
+it just has to yield some time in the future.
+
+```ruby
+class EMPromise < PurePromise
+  def defer
+    EM.next_tick { yield }
+  end
+end
+```
+
+### Creating promises
+
+```ruby
+# Create a fulfilled promise
+PurePromise.fulfill(:value)
+PurePromise.fulfill
+
+# Create a rejected promise
+PurePromise.reject(:value)
+PurePromise.reject
+
+# Create a pending promise
+PurePromise.new
+
+# Create a promise which fulfills or rejects when fulfill or reject are called.
+PurePromise.new do |fulfill, reject|
+  if something?
+    fulfill.call(:value)
+  else
+    reject.call(:error)
+  end
+end
+
+# Create a promise which is rejected to an exception object, with backtrace properly set.
+PurePromise.error # #<RuntimeError: RuntimeError>
+PurePromise.error('message') # #<RuntimeError: message>
+PurePromise.error(TypeError, 'message') # #<TypeError: message>
+PurePromise.error(TypeError.new('message')) # #<TypeError: message>
+```
+
+### Mutating promises
+
+A promise can only be mutated once. Once it has transitioned from pending, the value cannot be changed.
+
+```ruby
+promise = Promise.new
+
+# It is recommended to pass a block to new for fulfilling and rejecting promises,
+# as this normally makes your code more clear
+promise.fulfill(:value)
+promise.reject(:value)
+
+# Make promise take on the form of thenable
+# This can be any object that implements a semi-compliant then method, as described in the Promises/A+ spec
+promise.resolve(thenable)
+
+```
+
+### Accessing promises
+
+The only way to access a promises value is through the then/catch methods.
+
+Each callback __must__ evaluate to a promise. If the action in the callback succeeds, return `PurePromise.fulfill`,
+otherwise return `PurePromise.reject`.
+
+`then` and `catch` always return a promise, which fulfills or rejects to the value of the promise returned from the callback when it is executed.
+
+If a callback raises an error, the promise returned by `then` or `catch` will be rejected with the error as the value.
+
+```ruby
+
+# Attach a fulfillment callback
+PurePromise.fulfill(:some_value).then(proc { |value|
+  puts value.inspect
+  PurePromise.fulfill
+})
+# :some_value
+
+# Attach a rejection callback
+PurePromise.error.catch(proc { |error|
+  puts error.inspect
+  PurePromise.fulfill
+})
+# #<RuntimeError: RuntimeError>
+
+# Attach both
+PurePromise.fulfill(:some_value).then(proc { |value|
+  puts value.inspect
+  PurePromise.fulfill
+}, proc { |error|
+  puts error.inspect
+  PurePromise.fulfill
+})
+
+```
 
 ## Shortcomings addressed
 
@@ -54,7 +151,7 @@ I could have got a lot of things wrong too, and I'd love to hear about them in t
 
 ## TODO
 
-* Add usage instructions
+* Allow you to pass a block to then and catch
 * DRY up specs; they are pretty verbose atm.
 * Get 100% mutation coverage
 * Release gem
