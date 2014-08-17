@@ -46,14 +46,10 @@ class PurePromise
   end
 
   def fulfill(value=nil)
-    raise MutationError, 'You can only fulfill a pending promise' unless pending?
-
     mutate_state(:fulfilled, value, @callbacks.map(&:first))
   end
 
   def reject(value=nil)
-    raise MutationError, 'You can only reject a pending promise' unless pending?
-
     mutate_state(:rejected, value, @callbacks.map(&:last))
   end
 
@@ -88,6 +84,8 @@ private
   end
 
   def mutate_state(state, value, callbacks)
+    raise MutationError, 'You can only mutate pending promises' unless pending?
+
     @state = state
     @value = value
 

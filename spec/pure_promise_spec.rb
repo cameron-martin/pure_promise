@@ -72,12 +72,12 @@ describe PurePromise do
 
     it 'should raise error if fulfill twice' do
       subject.fulfill
-      expect { subject.fulfill }.to raise_error(PurePromise::MutationError, 'You can only fulfill a pending promise')
+      expect { subject.fulfill }.to raise_error(PurePromise::MutationError, 'You can only mutate pending promises')
     end
 
     it 'should raise error if fulfilled after being rejected' do
       subject.reject
-      expect { subject.fulfill }.to raise_error(PurePromise::MutationError, 'You can only fulfill a pending promise')
+      expect { subject.fulfill }.to raise_error(PurePromise::MutationError, 'You can only mutate pending promises')
     end
 
     it 'returns self' do
@@ -99,12 +99,12 @@ describe PurePromise do
 
     it 'should raise error if rejected twice' do
       subject.reject
-      expect { subject.reject }.to raise_error(PurePromise::MutationError, 'You can only reject a pending promise')
+      expect { subject.reject }.to raise_error(PurePromise::MutationError, 'You can only mutate pending promises')
     end
 
     it 'should raise error if rejected after being fulfilled' do
       subject.fulfill
-      expect { subject.reject }.to raise_error(PurePromise::MutationError, 'You can only reject a pending promise')
+      expect { subject.reject }.to raise_error(PurePromise::MutationError, 'You can only mutate pending promises')
     end
 
     it 'returns self' do
