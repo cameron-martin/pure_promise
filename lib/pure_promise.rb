@@ -11,7 +11,8 @@ class PurePromise
     def_delegators :new, :fulfill, :reject
 
     # TODO: Clean this up, it's pretty messy.
-    def error(message_or_exception=nil, message=nil, backtrace=caller(2))
+    def error(message_or_exception=nil, message=nil, backtrace=nil)
+      backtrace ||= caller(2) # Fix for jRuby - See https://github.com/jruby/jruby/issues/1908
       if message_or_exception.respond_to?(:exception)
         exception = message_or_exception.exception(message || message_or_exception)
       else
