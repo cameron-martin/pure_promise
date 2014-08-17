@@ -20,6 +20,42 @@ describe PurePromise do
     end
   end
 
+  describe '.error' do
+
+    it 'rejects to a RuntimeError with no arguments' do
+      promise = PurePromise.error
+
+      expect_rejection(promise, with: an_error(RuntimeError).with_backtrace(caller))
+    end
+
+    it 'rejects to a RuntimeError with message with single string argument' do
+      promise = PurePromise.error('error message')
+
+      expect_rejection(promise, with: an_error(RuntimeError, 'error message').with_backtrace(caller))
+    end
+
+    it 'rejects to a specific error when given an Exception object' do
+      exception = TypeError.new('error message')
+      promise = PurePromise.error(exception)
+
+      expect_rejection(promise, with: an_error(TypeError, 'error message').with_backtrace(caller))
+    end
+
+    it 'rejects to a specific error when given a exception class and string' do
+      promise = PurePromise.error(TypeError, 'error message')
+
+      expect_rejection(promise, with: an_error(TypeError, 'error message').with_backtrace(caller))
+    end
+
+    it 'sets custom backtrace if given third argument' do
+      backtrace = ['something']
+      promise = PurePromise.error(TypeError, 'error message', backtrace)
+
+      expect_rejection(promise, with: an_error(TypeError, 'error message').with_backtrace(backtrace))
+    end
+
+  end
+
   # TODO: Test delegation of .fulfill and .reject
 
   describe '#fulfill' do

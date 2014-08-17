@@ -9,6 +9,17 @@ class PurePromise
     extend Forwardable
 
     def_delegators :new, :fulfill, :reject
+
+    # TODO: Clean this up, it's pretty messy.
+    def error(message_or_exception=nil, message=nil, backtrace=caller(2))
+      if message_or_exception.respond_to?(:exception)
+        exception = message_or_exception.exception(message || message_or_exception)
+      else
+        exception = RuntimeError.new(message_or_exception)
+      end
+      exception.set_backtrace(backtrace)
+      reject(exception)
+    end
   end
 
   def initialize
