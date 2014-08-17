@@ -4,7 +4,8 @@ rvm:
   - 2.0
   - 2.1
   - jruby
-  - rbx-2.2.9
+  - rbx-2.1
+  - rbx-2.2
   - ruby-head
   - jruby-head
 matrix:
@@ -14,5 +15,4 @@ matrix:
   fast_finish: true
 before_install:
   - gem install bundler
-script: bundle exec rspec
 install: bundle install --jobs=1 --retry=3
