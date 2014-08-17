@@ -31,7 +31,7 @@ class PurePromise
 
   # REVIEW: Consider having two callback chains, to avoid having potentially expensive null_callbacks littering @callbacks
   def then(fulfill_callback=null_callback, reject_callback=null_callback)
-    PurePromise.new.tap do |return_promise|
+    self.class.new.tap do |return_promise|
       register_callbacks(
           Callback.new(fulfill_callback, return_promise),
           Callback.new(reject_callback, return_promise)
