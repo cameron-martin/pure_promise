@@ -278,25 +278,33 @@ describe PurePromise do
 
     context 'with no callbacks' do
 
-      it 'returns a promise that fulfills when subject fulfills' do
-        return_promise = subject.then
+      before(:each) { @return_promise = subject.then }
 
+      it 'returns a promise that fulfills when subject fulfills' do
         subject.fulfill(:value)
 
-        expect_fulfillment(return_promise, with: :value)
+        expect_fulfillment(@return_promise, with: :value)
       end
 
       it 'returns a promise that rejects when subject rejects' do
-        return_promise = subject.then
-
         subject.reject(:value)
 
-        expect_rejection(return_promise, with: :value)
+        expect_rejection(@return_promise, with: :value)
       end
 
     end
 
     context 'with fulfill callback' do
+
+      it 'allows registering fulfill callback by passing a block' do
+        return_promise = subject.then do
+          PurePromise.fulfill(:value)
+        end
+
+        subject.fulfill
+
+        expect_fulfillment(return_promise, with: :value)
+      end
 
       context 'when callback is registered while pending' do
 
@@ -402,16 +410,35 @@ describe PurePromise do
 
       expect(callback).to receive(:call).with(:value).and_call_original
 
-      subject.catch(callback)
+      subject.catch(&callback)
     end
 
     it 'returns a promise that fulfills with original' do
-      promise = subject.catch(proc { PurePromise.fulfill })
+      promise = subject.catch { PurePromise.fulfill }
 
       expect_fulfillment(promise, with: :value) do
         subject.fulfill(:value)
       end
     end
+
+    context 'with no callbacks' do
+
+      before(:each) { @return_promise = subject.catch }
+
+      it 'returns a promise that fulfills when subject fulfills' do
+        subject.fulfill(:value)
+
+        expect_fulfillment(@return_promise, with: :value)
+      end
+
+      it 'returns a promise that rejects when subject rejects' do
+        subject.reject(:value)
+
+        expect_rejection(@return_promise, with: :value)
+      end
+
+    end
+
 
   end
 

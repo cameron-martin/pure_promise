@@ -107,17 +107,17 @@ If a callback raises an error, the promise returned by `then` or `catch` will be
 ```ruby
 
 # Attach a fulfillment callback
-PurePromise.fulfill(:some_value).then(proc { |value|
+PurePromise.fulfill(:some_value).then do |value|
   puts value.inspect
   PurePromise.fulfill
-})
+end
 # :some_value
 
 # Attach a rejection callback
-PurePromise.error.catch(proc { |error|
+PurePromise.error.catch do |error|
   puts error.inspect
   PurePromise.fulfill
-})
+end
 # #<RuntimeError: RuntimeError>
 
 # Attach both
@@ -155,7 +155,6 @@ I could have got a lot of things wrong too, and I'd love to hear about them in t
 
 ## TODO
 
-* Allow you to pass a block to then and catch
 * DRY up specs; they are pretty verbose atm.
 * Get 100% mutation coverage
 * Release gem
