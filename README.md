@@ -7,7 +7,7 @@ My promises library. It tries to be as close to the Promises/A+ spec as possible
 
 __A promise callback _must_ return a promise__
 
-This makes it slightly more verbose, but it has some nice properties. I'll explain them here later.
+This makes it slightly more verbose, but it gives them some nice properties. I'll explain them here later.
 
 Influenced by [promise.rb][2], the [Promises/A+ spec][3], and browsers' implementations of promises (for the stuff that's not `#then`).
 
