@@ -80,7 +80,7 @@ PurePromise.error(TypeError.new('message')) # #<TypeError: message>
 A promise can only be mutated once. Once it has transitioned from pending, the value cannot be changed.
 
 ```ruby
-promise = Promise.new
+promise = PurePromise.new
 
 # It is recommended to pass a block to new for fulfilling and rejecting promises,
 # as this normally makes your code more clear
