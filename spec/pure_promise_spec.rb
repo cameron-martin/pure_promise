@@ -160,7 +160,7 @@ describe PurePromise do
       end
     end
 
-    context 'when argument is a thenable' do
+    context 'when argument is a conformant thenable' do
       it 'fulfills when callback passed to then is called' do
         thenable = Thenable::Conformant.new
 
@@ -180,6 +180,19 @@ describe PurePromise do
           thenable.reject(:value)
         end
       end
+    end
+
+    context 'when argument is thenable that fulfills twice' do
+
+      it 'does not raise error on second fulfill' do
+        thenable = Thenable::Conformant.new
+
+        subject.resolve(thenable)
+        thenable.fulfill(1)
+
+        expect { thenable.fulfill(1) }.to_not raise_error
+      end
+
     end
 
   end
