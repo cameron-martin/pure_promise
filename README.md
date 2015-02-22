@@ -31,6 +31,8 @@ Or install it yourself as:
 
 ### Making them asynchronous
 
+PurePromise is agnostic about what you use to make them asynchronous. Just over-write the defer method, and you're done.
+
 Note: The defer method does not have to yield in the order in which defer was called,
 it just has to yield some time in the future.
 
