@@ -1,3 +1,5 @@
+require 'forwardable'
+
 require 'pure_promise/callback'
 require 'pure_promise/coercer'
 
